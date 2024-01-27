@@ -25,7 +25,7 @@ public class Estudiante {
 	private String apellido;
 	@Column(name="estu_genero")
 	private String genero;
-	@Column(name="estu_fecha_acimiento")
+	@Column(name="estu_fecha_nacimiento")
 	private LocalDateTime fechaNacimiento;
 	
 	//GET Y SET

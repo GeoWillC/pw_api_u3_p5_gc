@@ -52,5 +52,4 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		// TODO Auto-generated method stub
 		this.entityManager.remove(this.seleccionar(id));
 	}
-
 }
