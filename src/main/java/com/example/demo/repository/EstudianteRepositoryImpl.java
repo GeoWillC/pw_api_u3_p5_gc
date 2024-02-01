@@ -28,14 +28,14 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 	}
 
 	@Override
-	public void actualizarParcial(String nombre, String apellido, Integer id) {
+	public void actualizarParcial(String name, String apellido, Integer id) {
 		// TODO Auto-generated method stub
 		// JPQL
 		// SQL UPDATE estudiante e set e.estu_nombre=:valor, e.estu_apellido=:valor2
 		// WHERE e.estu_apellido:=valor3
 		Query query = this.entityManager
-				.createQuery("UPDATE Estudiante e SET e.nombre =:valor1 , e.apellido=:valor2 WHERE e.id=:valor3");
-		query.setParameter("valor1", nombre);
+				.createQuery("UPDATE Estudiante e SET e.name =:valor1 , e.apellido=:valor2 WHERE e.id=:valor3");
+		query.setParameter("valor1", name);
 		query.setParameter("valor2", apellido);
 		query.setParameter("valor3", id);
 		// Retorna un numero, la cantidad de registros que se actualizacion
