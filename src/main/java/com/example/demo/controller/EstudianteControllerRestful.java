@@ -35,28 +35,32 @@ public class EstudianteControllerRestful {
 	// GET
 	//Se puede stakear varios path variables  pero se debe agregar en la firma
 	///consultar/{id}/{nombre}
-	@GetMapping(path = "/consultar/{id}")
+	
+	//http://localhost:8080/API/v1.0/Matricula/estudiantes/{id} GET
+	
+	@GetMapping(path = "/{id}")
 	public Estudiante buscar(@PathVariable Integer id) {
 		System.out.println(iEstudianteService.busqueda(id));
 		return iEstudianteService.busqueda(id);
 	}
 
-	@PostMapping(path = "/guardar")
+	@PostMapping()
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.iEstudianteService.guardar(estudiante);
 	}
 
-	@PutMapping(path = "/actualizar")
-	public void actualizar(@RequestBody Estudiante estudiante) {
+	@PutMapping(path = "/{id}")
+	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
+		estudiante.setId(id);
 		this.iEstudianteService.actualizar(estudiante);
 	}
 
-	@PatchMapping(path = "/actualizarParcial")
-	public void actualizarParcial(@RequestBody Estudiante estudiante) {
-		this.iEstudianteService.actualizarParcial(estudiante.getName(), estudiante.getApellido(), estudiante.getId());
+	@PatchMapping(path = "/{id}")
+	public void actualizarParcial(@RequestBody Estudiante estudiante,@PathVariable Integer id) {
+		this.iEstudianteService.actualizarParcial(estudiante.getName(), estudiante.getApellido(), id);
 	}
 
-	@DeleteMapping(path = "/borrar/{id}")
+	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
 		this.iEstudianteService.borrar(id);
 	}
@@ -67,9 +71,11 @@ public class EstudianteControllerRestful {
 //	}
 	// url =
 	// http://localhost:8080/API/v1.0/Matricula/estudiantes/consultarTodo?genero=M&edad=100
-	@GetMapping(path = "/consultarTodo")
-	public List<Estudiante> buscarTodo(@RequestParam String genero,@RequestParam Integer edad) {
-		System.out.println(edad);
+	
+	//http://localhost:8080/API/v1.0/Matricula/estudiantes GET si no hay request param
+	
+	@GetMapping()
+	public List<Estudiante> buscarTodo(@RequestParam(required = false,defaultValue = "M") String genero) {
 		return iEstudianteService.consultarTodo(genero);
 	}
 }
