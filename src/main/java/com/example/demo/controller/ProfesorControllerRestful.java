@@ -26,31 +26,36 @@ public class ProfesorControllerRestful {
 	
 	
 	//buscar
-	@GetMapping(path="/consultar/{id}")
+	@GetMapping(path="/{id}")
 	public Profesor consultar(@PathVariable Integer id) {
 		System.out.println(this.iProfesorService.busqueda(id));
 		return this.iProfesorService.busqueda(1);
 	}
-	@PostMapping(path="/guardar")
-	public void guardar(@RequestBody Profesor profesor) {
-		this.iProfesorService.guardar(profesor);		
-	}
-	@PutMapping(path = "/actualizar")
-	public void actualizar(@RequestBody Profesor profesor) {
-		this.iProfesorService.actualizar(profesor);
-	}
-	@PatchMapping(path = "/actualizarParcial")
-	public void actualizarParcial(@RequestBody Profesor profesor) {
-		this.iProfesorService.actualizarParcial(profesor.getNombre(), profesor.getApellido(), profesor.getId());
-	}
-	@DeleteMapping(path = "/borrar/{id}")
-	public void borrar(@PathVariable Integer id) {
-		this.iProfesorService.borrar(id);
-	}
-	@GetMapping(path = "/consultarTodo")
+	@GetMapping()
 	public List<Profesor> consultarTodo(@RequestParam String genero){
 	System.out.println("Genero "+ genero);
 		return this.iProfesorService.consultarTodo(genero);		
 	}
+	
+	@PostMapping()
+	public void guardar(@RequestBody Profesor profesor) {
+		this.iProfesorService.guardar(profesor);		
+	}
+	//FULL UPDATE IT NEEDS AN ID AND A REQUEST BODY
+	@PutMapping(path = "/{id}")
+	public void actualizar(@RequestBody Profesor profesor,@PathVariable Integer id) {
+		profesor.setId(id);
+		this.iProfesorService.actualizar(profesor);
+	} 
+	//PARTIAL UPDATE, IT NEEDS AN ID AND A REQUEST BODY
+	@PatchMapping(path = "/{id}")
+	public void actualizarParcial(@RequestBody Profesor profesor,@PathVariable Integer id) {
+		this.iProfesorService.actualizarParcial(profesor.getNombre(), profesor.getApellido(), id);
+	}
+	@DeleteMapping(path = "/{id}")
+	public void borrar(@PathVariable Integer id) {
+		this.iProfesorService.borrar(id);
+	}
+	
 	
 }
