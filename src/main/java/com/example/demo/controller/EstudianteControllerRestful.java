@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,7 +28,6 @@ public class EstudianteControllerRestful {
 
 	// CAPACIDAD Y TIPO DE VERBO
 	// Metodos y verbos http
-
 	// url = http://localhost:8080/API/v1.0/Matricula/estudiantes/buscar
 	// PATH VARIABLE:
 	// ......../consulta/3
@@ -35,27 +35,25 @@ public class EstudianteControllerRestful {
 	// GET
 	//Se puede stakear varios path variables  pero se debe agregar en la firma
 	///consultar/{id}/{nombre}
-	
 	//http://localhost:8080/API/v1.0/Matricula/estudiantes/{id} GET
-	
-	@GetMapping(path = "/{id}")
+	@GetMapping(path = "/{id}",produces = MediaType.APPLICATION_XML_VALUE)
 	public Estudiante buscar(@PathVariable Integer id) {
 		System.out.println(iEstudianteService.busqueda(id));
 		return iEstudianteService.busqueda(id);
 	}
 
-	@PostMapping()
+	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE)
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.iEstudianteService.guardar(estudiante);
 	}
 
-	@PutMapping(path = "/{id}")
+	@PutMapping(path = "/{id}",consumes = MediaType.APPLICATION_XML_VALUE)
 	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
 		estudiante.setId(id);
 		this.iEstudianteService.actualizar(estudiante);
 	}
 
-	@PatchMapping(path = "/{id}")
+	@PatchMapping(path = "/{id}",consumes = MediaType.APPLICATION_XML_VALUE)
 	public void actualizarParcial(@RequestBody Estudiante estudiante,@PathVariable Integer id) {
 		this.iEstudianteService.actualizarParcial(estudiante.getName(), estudiante.getApellido(), id);
 	}
@@ -74,7 +72,7 @@ public class EstudianteControllerRestful {
 	
 	//http://localhost:8080/API/v1.0/Matricula/estudiantes GET si no hay request param
 	
-	@GetMapping()
+	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
 	public List<Estudiante> buscarTodo(@RequestParam(required = false,defaultValue = "M") String genero) {
 		return iEstudianteService.consultarTodo(genero);
 	}
