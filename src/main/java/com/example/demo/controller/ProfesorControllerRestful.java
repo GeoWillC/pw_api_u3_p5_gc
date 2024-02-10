@@ -62,6 +62,4 @@ public class ProfesorControllerRestful {
 	public void borrar(@PathVariable Integer id) {
 		this.iProfesorService.borrar(id);
 	}
-	
-	
 }

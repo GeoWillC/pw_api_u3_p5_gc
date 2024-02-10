@@ -1,12 +1,16 @@
 package com.example.demo.repository.modelo;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -27,8 +31,17 @@ public class Estudiante {
 	private String genero;
 	@Column(name="estu_fecha_nacimiento")
 	private LocalDateTime fechaNacimiento;
-	
+	//https://stackoverflow.com/questions/73566546/how-to-solve-at-com-fasterxml-jackson-databind-error
+	@JsonManagedReference
+	@OneToMany(mappedBy = "estudiante" )
+	private List<Materia>  materia;
 	//GET Y SET
+	public List<Materia> getMaterias() {
+		return materia;
+	}
+	public void setMaterias(List<Materia> materias) {
+		this.materia = materias;
+	}
 	public Integer getId() {
 		return id;
 	}

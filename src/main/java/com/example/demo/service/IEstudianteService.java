@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.service.to.EstudianteTO;
 
 
 public interface IEstudianteService {
@@ -21,4 +22,7 @@ public interface IEstudianteService {
 	public void borrar(Integer id);
 	
 	public List<Estudiante> consultarTodo(String genero);
+	
+	public List<EstudianteTO> consultarTodoTo();
+	
 }
