@@ -19,6 +19,8 @@ public interface IEstudianteService {
 
 	public Estudiante busqueda(Integer id);
 	
+	public EstudianteTO busquedaTO(Integer id);
+	
 	public void borrar(Integer id);
 	
 	public List<Estudiante> consultarTodo(String genero);

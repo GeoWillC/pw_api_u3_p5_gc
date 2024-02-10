@@ -1,6 +1,7 @@
 package com.example.demo.repository.modelo;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "materia")
+@JsonIgnoreProperties(value="estudiante")
 public class Materia {
 	@Id
 	//@GeneratedValue el nombre de la @SequenceGenerator sequenceName
@@ -25,7 +27,7 @@ public class Materia {
 	private String nombre;
 	@Column(name="mate_credito")
 	private Integer credito;
-	@JsonBackReference
+	//@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "mate_id_estudiante")
 	private Estudiante estudiante;

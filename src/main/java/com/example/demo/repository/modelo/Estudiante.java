@@ -3,6 +3,7 @@ package com.example.demo.repository.modelo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="estudiante")
+//Evitar dependencia ciclina
 public class Estudiante {
 	@Id
 	//@GeneratedValue el nombre de la @SequenceGenerator sequenceName
@@ -32,7 +34,7 @@ public class Estudiante {
 	@Column(name="estu_fecha_nacimiento")
 	private LocalDateTime fechaNacimiento;
 	//https://stackoverflow.com/questions/73566546/how-to-solve-at-com-fasterxml-jackson-databind-error
-	@JsonManagedReference
+	//@JsonManagedReference
 	@OneToMany(mappedBy = "estudiante" )
 	private List<Materia>  materia;
 	//GET Y SET

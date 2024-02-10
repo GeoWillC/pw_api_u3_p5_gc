@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,9 @@ import com.example.demo.service.IEstudianteService;
 import com.example.demo.service.IMateriaService;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
+//Apuntes para examen
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 //SERVICIO
 @RestController
@@ -45,15 +49,28 @@ public class EstudianteControllerRestful {
 	//Se puede stakear varios path variables  pero se debe agregar en la firma
 	///consultar/{id}/{nombre}
 	//http://localhost:8080/API/v1.0/Matricula/estudiantes/{id} GET
-	@GetMapping(path = "/{id}",produces = MediaType.APPLICATION_XML_VALUE)
-	public ResponseEntity<Estudiante> buscar(@PathVariable Integer id) {
-		Estudiante estu = this.iEstudianteService.busqueda(id);
+	@GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<EstudianteTO> buscar(@PathVariable Integer id) {
+		EstudianteTO estu = this.iEstudianteService.busquedaTO(id);
+		Link link =linkTo(methodOn(EstudianteControllerRestful.class).consultarMateriasId(estu.getId()))
+				.withRel("tusMaterias");	
+		Link link2 =linkTo(methodOn(EstudianteControllerRestful.class).consultarMateriasId(estu.getId()))
+				.withSelfRel();
+		estu.add(link);
+		estu.add(link2);
 		return ResponseEntity.status(241).body(estu);
 	}
-	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> buscarTodoHateoas(@RequestParam(required = false,defaultValue = "M") String genero) {
 		//Quemado con fin didactico
 		List<EstudianteTO> lista = this.iEstudianteService.consultarTodoTo();
+		for(EstudianteTO eto:lista) {
+			//Link para cada estudiante de la lista total de materias
+			//Se contruye en funcion del link del endpoint
+			Link link =linkTo(methodOn(EstudianteControllerRestful.class).consultarMateriasId(eto.getId()))
+					.withRel("tusMaterias");	
+			eto.add(link);
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(lista);
 	}
 	//URL DE MATERIAS
@@ -62,6 +79,7 @@ public class EstudianteControllerRestful {
 	public ResponseEntity<List<MateriaTO>> consultarMateriasId(@PathVariable Integer id) {
 		List<MateriaTO> lista= this.iMateriaService.buscarPorIdEstudiante(id);
 		//return ResponseEntity.status(241).body(this.iMateriaService.buscarPorIdEstudiante(id));
+	
 		return ResponseEntity.status(HttpStatus.OK).body(lista);
 	}
 	
@@ -95,7 +113,7 @@ public class EstudianteControllerRestful {
 	
 	//http://localhost:8080/API/v1.0/Matricula/estudiantes GET si no hay request param
 	
-
+//Statc package
 
 	
 }
