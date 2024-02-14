@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.service.dto.EstudianteLigeroTO;
 import com.example.demo.service.to.EstudianteTO;
 
 
@@ -27,4 +28,5 @@ public interface IEstudianteService {
 	
 	public List<EstudianteTO> consultarTodoTo();
 	
+	public EstudianteLigeroTO busquedaLigera(Integer id);
 }

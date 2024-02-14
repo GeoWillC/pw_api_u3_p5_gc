@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import jakarta.persistence.Column;
+
 
 public class EstudianteTO extends RepresentationModel<EstudianteTO> implements Serializable {
 	
@@ -18,6 +20,13 @@ public class EstudianteTO extends RepresentationModel<EstudianteTO> implements S
 	private String apellido;
 	private String genero;
 	private LocalDateTime fechaNacimiento;
+	//+5
+	private String cedula;
+	private String edad;
+	private String hobby;
+	private String paralelo;
+	private String anio;
+	
 	
 	//METODOS SET Y GET
 	public Integer getId() {
@@ -49,6 +58,36 @@ public class EstudianteTO extends RepresentationModel<EstudianteTO> implements S
 	}
 	public void setFechaNacimiento(LocalDateTime fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+	public String getCedula() {
+		return cedula;
+	}
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
+	}
+	public String getEdad() {
+		return edad;
+	}
+	public void setEdad(String edad) {
+		this.edad = edad;
+	}
+	public String getHobby() {
+		return hobby;
+	}
+	public void setHobby(String hobby) {
+		this.hobby = hobby;
+	}
+	public String getParalelo() {
+		return paralelo;
+	}
+	public void setParalelo(String paralelo) {
+		this.paralelo = paralelo;
+	}
+	public String getAnio() {
+		return anio;
+	}
+	public void setAnio(String anio) {
+		this.anio = anio;
 	}
 	
 }

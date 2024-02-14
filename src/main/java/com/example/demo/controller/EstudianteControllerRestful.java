@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +23,12 @@ import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.repository.modelo.Materia;
 import com.example.demo.service.IEstudianteService;
 import com.example.demo.service.IMateriaService;
+import com.example.demo.service.dto.EstudianteLigeroTO;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
+
+import jakarta.activation.MimeType;
+
 //Apuntes para examen
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -54,12 +59,24 @@ public class EstudianteControllerRestful {
 		EstudianteTO estu = this.iEstudianteService.busquedaTO(id);
 		Link link =linkTo(methodOn(EstudianteControllerRestful.class).consultarMateriasId(estu.getId()))
 				.withRel("tusMaterias");	
-		Link link2 =linkTo(methodOn(EstudianteControllerRestful.class).consultarMateriasId(estu.getId()))
+		Link linkLigero =linkTo(methodOn(EstudianteControllerRestful.class).buscarLigero(estu.getId()))
 				.withSelfRel();
 		estu.add(link);
-		estu.add(link2);
+		estu.add(linkLigero);
 		return ResponseEntity.status(241).body(estu);
 	}
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}/ligero")
+	//@GetMapping(path = "/{id}/estudianteTO")
+	public ResponseEntity<EstudianteLigeroTO> buscarLigero(@PathVariable Integer id){
+		EstudianteLigeroTO elto=this.iEstudianteService.busquedaLigera(id);
+		Link link=linkTo(methodOn(EstudianteControllerRestful.class).consultarMateriasId(elto.getId()))
+				.withRel("tusMaterias");
+		Link autolink=linkTo(methodOn(EstudianteControllerRestful.class).buscar(elto.getId())).withSelfRel();
+		elto.add(link);
+		elto.add(autolink);
+		return ResponseEntity.status(HttpStatus.OK).body(elto);
+	}
+	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> buscarTodoHateoas(@RequestParam(required = false,defaultValue = "M") String genero) {
 		//Quemado con fin didactico
@@ -83,6 +100,7 @@ public class EstudianteControllerRestful {
 		return ResponseEntity.status(HttpStatus.OK).body(lista);
 	}
 	
+
 	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE)
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.iEstudianteService.guardar(estudiante);
