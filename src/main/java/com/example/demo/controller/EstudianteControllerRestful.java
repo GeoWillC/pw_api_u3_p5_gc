@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,8 +27,6 @@ import com.example.demo.service.dto.EstudianteLigeroTO;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
 
-import jakarta.activation.MimeType;
-
 //Apuntes para examen
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -36,6 +34,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 //SERVICIO
 @RestController
 @RequestMapping(path = "/estudiantes")
+@CrossOrigin
 public class EstudianteControllerRestful {
 
 	@Autowired
@@ -63,7 +62,7 @@ public class EstudianteControllerRestful {
 				.withSelfRel();
 		estu.add(link);
 		estu.add(linkLigero);
-		return ResponseEntity.status(241).body(estu);
+		return ResponseEntity.status(HttpStatus.OK).body(estu);
 	}
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}/ligero")
 	//@GetMapping(path = "/{id}/estudianteTO")
@@ -92,7 +91,7 @@ public class EstudianteControllerRestful {
 	}
 	//URL DE MATERIAS
 	//http://localhost:8082/API/v1.0/Matricula/estudiantes/1/materias 	GET
-	@GetMapping(path = "/{id}/materias",produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(path = "/{id}/materias",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<MateriaTO>> consultarMateriasId(@PathVariable Integer id) {
 		List<MateriaTO> lista= this.iMateriaService.buscarPorIdEstudiante(id);
 		//return ResponseEntity.status(241).body(this.iMateriaService.buscarPorIdEstudiante(id));
@@ -101,12 +100,12 @@ public class EstudianteControllerRestful {
 	}
 	
 
-	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.iEstudianteService.guardar(estudiante);
 	}
 
-	@PutMapping(path = "/{id}",consumes = MediaType.APPLICATION_XML_VALUE)
+	@PutMapping(path = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
 		estudiante.setId(id);
 		this.iEstudianteService.actualizar(estudiante);
